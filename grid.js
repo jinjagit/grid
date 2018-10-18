@@ -5,19 +5,16 @@ function drawPage() {
 
   body.style.backgroundColor = backgroundColor;
 
-  sidebarTrigger.style.position = "absolute";
-  sidebarTrigger.style.zIndex = "1";
-  sidebarTrigger.style.height = "100%";
-  sidebarTrigger.style.width = `${window.innerHeight / 50}px`;
+  sidebarTrigger.style.width = `${window.innerHeight / 100}px`;
+
+  sidebarDiv.style.width = `${window.innerHeight / 10}px`;
 
   grid.style.height = `${window.innerHeight}px`;
   grid.style.backgroundColor = backgroundColor;
-  grid.style.display = "grid";
   grid.style.gridGap = gridGap;
-  //grid.style.margin = "auto";
+
   destroyCells();
   drawCells();
-
 }
 
 function drawCells() {
@@ -50,11 +47,11 @@ function cellClick(clickedID) {
 }
 
 function triggerHover() {
-  console.log("on");
+  sidebarDiv.style.display = "inline-block";
 }
 
 function triggerUnHover() {
-  console.log("off");
+  sidebarDiv.style.display = "none";
 }
 
 
@@ -66,10 +63,24 @@ let gridN = 3;
 let cellHeight = 0;
 let gridGap = "1px";
 
+let sidebarOn = false;
+
 let body = document.getElementsByTagName('body')[0];
 
+grid.style.display = "grid";
+sidebarTrigger.style.position = "absolute";
+sidebarTrigger.style.zIndex = "2";
+sidebarTrigger.style.height = "100%";
 sidebarTrigger.style.backgroundColor = "transparent";
 sidebarTrigger.addEventListener('mouseover', triggerHover);
-sidebarTrigger.addEventListener('mouseout', triggerUnHover);
+
+
+sidebarDiv.style.position = "absolute";
+sidebarDiv.style.zIndex = "1";
+sidebarDiv.style.height = "100%";
+sidebarDiv.style.display = "none";
+sidebarDiv.style.backgroundColor = backgroundColor;
+sidebarDiv.addEventListener('mouseout', triggerUnHover);
+document.addEventListener('mouseout', triggerUnHover);
 
 drawPage(); // Also called whenever window (body) is resized
