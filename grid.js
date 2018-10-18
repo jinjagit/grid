@@ -47,11 +47,20 @@ function cellClick(clickedID) {
 }
 
 function triggerHover() {
+  sidebarOn = true;
   sidebarDiv.style.display = "inline-block";
 }
 
 function triggerUnHover() {
   sidebarDiv.style.display = "none";
+}
+
+function windowUnHover() {
+  if (sidebarOn == true) {
+    sidebarDiv.style.display = "none";
+    sidebarOn = false;
+  }
+
 }
 
 
@@ -81,6 +90,7 @@ sidebarDiv.style.height = "100%";
 sidebarDiv.style.display = "none";
 sidebarDiv.style.backgroundColor = backgroundColor;
 sidebarDiv.addEventListener('mouseout', triggerUnHover);
-document.addEventListener('mouseout', triggerUnHover);
+
+body.addEventListener('mouseleave', windowUnHover);
 
 drawPage(); // Also called whenever window (body) is resized
