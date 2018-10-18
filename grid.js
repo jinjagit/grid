@@ -4,6 +4,12 @@ function drawPage() {
   cellHeight = (window.innerHeight / gridN);
 
   body.style.backgroundColor = backgroundColor;
+
+  sidebarTrigger.style.position = "absolute";
+  sidebarTrigger.style.zIndex = "1";
+  sidebarTrigger.style.height = "100%";
+  sidebarTrigger.style.width = `${window.innerHeight / 50}px`;
+
   grid.style.height = `${window.innerHeight}px`;
   grid.style.backgroundColor = backgroundColor;
   grid.style.display = "grid";
@@ -43,8 +49,17 @@ function cellClick(clickedID) {
 
 }
 
+function triggerHover() {
+  console.log("on");
+}
 
-let backgroundColor = "grey";
+function triggerUnHover() {
+  console.log("off");
+}
+
+
+let backgroundColor = "hsl(128, 20%, 35%)";
+let menuHoverColor = "hsl(128, 20%, 65%)";
 let cellColor = "black";
 
 let gridN = 3;
@@ -52,5 +67,9 @@ let cellHeight = 0;
 let gridGap = "1px";
 
 let body = document.getElementsByTagName('body')[0];
+
+sidebarTrigger.style.backgroundColor = "transparent";
+sidebarTrigger.addEventListener('mouseover', triggerHover);
+sidebarTrigger.addEventListener('mouseout', triggerUnHover);
 
 drawPage(); // Also called whenever window (body) is resized
