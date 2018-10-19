@@ -149,6 +149,20 @@ function clickGridBtn() {
   drawSettings();
 }
 
+function clickCloseBtn() {
+  settingsBox.style.display = "none";
+}
+
+function closeHover() {
+  closeBtnBox.style.backgroundColor = menuHoverColor;
+  closeBtnText.style.color = cellColor;
+}
+
+function closeUnhover() {
+  closeBtnBox.style.backgroundColor = cellColor;
+  closeBtnText.style.color = backgroundColor;
+}
+
 let windowH = 0;
 let lastWindowH = 0;
 let lastSidebarH = 0;
@@ -215,6 +229,11 @@ settingsBox.style.zIndex = "3";
 settingsBox.style.backgroundColor = backgroundColor;
 
 closeBtnText.style.color = backgroundColor;
+closeBtnBox.addEventListener('mouseover', closeHover);
+closeBtnBox.addEventListener('mouseout', closeUnhover);
+let clickCloseBtnAtt = document.createAttribute("onclick");
+clickCloseBtnAtt.value = "clickCloseBtn()";
+closeBtnBox.setAttributeNode(clickCloseBtnAtt);
 
 drawPage(); // Also called whenever window (body) is resized, via redrawPage()
 drawSidebar();
