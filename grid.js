@@ -1,28 +1,35 @@
 // grid, by Simon Tharby, 2018
 
 function drawPage() {
-  cellHeight = window.innerHeight / gridN;
-  borderW = window.innerHeight / 400;
-  menuBoxH = window.innerHeight / 20;
+  windowH = window.innerHeight;
+  cellHeight = windowH / gridN;
+  borderW = windowH / 400;
+  menuBoxH = windowH / 20;
 
+  sidebarDiv.style.display = "none";
   body.style.backgroundColor = backgroundColor;
+  grid.style.height = `${windowH}px`;
+  grid.style.backgroundColor = backgroundColor;
+  grid.style.gridGap = gridGap;
 
-  sidebarTrigger.style.width = `${window.innerHeight / 100}px`;
-  sidebarDiv.style.width = `${menuBoxH * 2}px`;
+  destroyCells();
+  drawCells();
+
+
+}
+
+function drawMenu() {
+  lastWindowH = windowH;
+  sidebarTrigger.style.width = `${windowH / 100}px`;
+  sidebarDiv.style.width = `${menuBoxH * 2.5}px`;
   titleBox.style.height = `${menuBoxH * 2}px`;
   titleBox.style.borderWidth = `${borderW}px ${borderW}px 0 ${borderW}px`;
   gridBtnBox.style.height = `${menuBoxH}px`;
   gridBtnBox.style.borderWidth = `${borderW}px ${borderW}px 0 ${borderW}px`;
 
-  grid.style.height = `${window.innerHeight}px`;
-  grid.style.backgroundColor = backgroundColor;
-  grid.style.gridGap = gridGap;
-
   gridBtnText.style.lineHeight = `${menuBoxH}px`;
   gridBtnText.style.fontSize = `${menuBoxH / 2}px`;
-
-  destroyCells();
-  drawCells();
+  console.log("redrawn");
 }
 
 function drawCells() {
@@ -56,26 +63,32 @@ function cellClick(clickedID) {
 
 function triggerHover() {
   sidebarOn = true;
+  if (windowH != lastWindowH) {
+    drawMenu();
+  }
   sidebarDiv.style.display = "inline-block";
 }
 
 function triggerUnhover() {
   sidebarDiv.style.display = "none";
+  sidebarOn = false;
+
 }
 
 function gridHover() {
   triggerHover();
   gridBtnBox.style.backgroundColor = menuHoverColor;
+  gridBtnText.style.color = "black";
 }
 
 function gridUnhover() {
   gridBtnBox.style.backgroundColor = cellColor;
+  gridBtnText.style.color = backgroundColor;
 }
 
 function windowUnHover() {
   if (sidebarOn == true) {
-    sidebarDiv.style.display = "none";
-    sidebarOn = false;
+    triggerUnhover();
   }
 }
 
@@ -83,9 +96,11 @@ function clickGrid() {
   console.log("clicked");
 }
 
+let windowH = 0;
+let lastWindowH = 0;
 
-let backgroundColor = "hsl(128, 20%, 35%)";
-let menuHoverColor = "hsl(128, 20%, 10%)";
+let backgroundColor = "hsl(128, 30%, 40%)";
+let menuHoverColor = "hsl(128, 30%, 65%)";
 let cellColor = "black";
 
 let gridN = 3;
@@ -136,3 +151,4 @@ gridBtnText.style.color = backgroundColor;
 body.addEventListener('mouseleave', windowUnHover);
 
 drawPage(); // Also called whenever window (body) is resized
+drawMenu();
