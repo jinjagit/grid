@@ -17,13 +17,15 @@ function drawPage() {
 
   destroyCells();
   drawCells();
+  if (settingsOn == true) {
+    drawSettings();
+  }
 
-  console.log("page redrawn");
   queueRedraw = true;
 }
 
-function drawMenu() {
-  lastMenuH = windowH;
+function drawSidebar() {
+  lastSidebarH = windowH;
   sidebarTrigger.style.width = `${windowH / 100}px`;
   sidebarDiv.style.width = `${menuBoxH * 2.5}px`;
   titleBox.style.height = `${menuBoxH * 2}px`;
@@ -33,7 +35,6 @@ function drawMenu() {
 
   gridBtnText.style.lineHeight = `${menuBoxH}px`;
   gridBtnText.style.fontSize = `${menuBoxH / 2}px`;
-  console.log("menu redrawn");
 }
 
 function drawCells() {
@@ -63,9 +64,12 @@ function destroyCells() {
 
 function redrawPage() {
   if (queueRedraw == true) {
-    body.style.backgroundColor = "black";
+    body.style.backgroundColor = cellColor;
+    if (settingsOn == true) {
+      settingsBox.style.display = "none";
+    }
     waitMsg.style.display = "block";
-    waitMsg.style.margin = `${menuBoxH * 10}px 0 0 0`;
+    waitMsg.style.margin = `${windowH / 2}px 0 0 0`;
     waitMsg.style.textAlign = "center";
     grid.style.display = "none";
     delay = setInterval(waitBeforeRedraw, 75); // can be tweaked to speed of PC
@@ -84,14 +88,36 @@ function waitBeforeRedraw() {
   }
 }
 
-function cellClick(clickedID) {
+function drawSettings() {
+  settingsOn = true;
+  let sideMargin = (window.innerWidth - (windowH / 2)) / 2;
+  let btnBorder = windowH / 200;
+  settingsBox.style.display = "block";
+  settingsBox.style.width = `${windowH / 2}px`;
+  settingsBox.style.margin = `${windowH / 4}px ${sideMargin}px ${windowH / 4}px ${sideMargin}px`;
+  setRow8.style.width = "100%";
+  setRow8.style.height = `${windowH / 16}px`;
+  closeBtnBox.style.height = `${(windowH / 16) - (2 * btnBorder)}px`;
+  closeBtnBox.style.width = `${windowH / 6}px`;
+  closeBtnBox.style.display = "inline-block";
+  closeBtnBox.style.margin = `0 0 0 ${windowH / 6}px`;
+  closeBtnBox.style.backgroundColor = cellColor;
+  closeBtnBox.style.borderStyle = "solid";
+  closeBtnBox.style.borderColor = backgroundColor;
+  closeBtnBox.style.borderWidth = `${btnBorder}px`;
+  closeBtnText.style.lineHeight = `${(windowH / 16) - (2 * btnBorder)}px`;
+  closeBtnText.style.fontSize = `${(windowH / 24) - (2 * btnBorder)}px`;
+  closeBtnText.style.textAlign = "center";
+}
 
+function cellClick(clickedID) {
+  // to develop: for use in editing module(s) placement(s) & settings
 }
 
 function triggerHover() {
   sidebarOn = true;
-  if (windowH != lastMenuH) {
-    drawMenu();
+  if (windowH != lastSidebarH) {
+    drawSidebar();
   }
   sidebarDiv.style.display = "inline-block";
 }
@@ -105,7 +131,7 @@ function triggerUnhover() {
 function gridHover() {
   triggerHover();
   gridBtnBox.style.backgroundColor = menuHoverColor;
-  gridBtnText.style.color = "black";
+  gridBtnText.style.color = cellColor;
 }
 
 function gridUnhover() {
@@ -119,14 +145,13 @@ function windowUnHover() {
   }
 }
 
-function clickGrid() {
-  console.log("clicked");
-
+function clickGridBtn() {
+  drawSettings();
 }
 
 let windowH = 0;
 let lastWindowH = 0;
-let lastMenuH = 0;
+let lastSidebarH = 0;
 
 let backgroundColor = "hsl(128, 30%, 40%)";
 let menuHoverColor = "hsl(128, 30%, 65%)";
@@ -139,11 +164,13 @@ let borderW = 0;
 
 let queueRedraw = false;
 let sidebarOn = false;
+let settingsOn = false;
 
 let body = document.getElementsByTagName('body')[0];
 
 body.style.fontFamily = "'Ubuntu Mono', monospace";
 body.style.fontWeight = "normal";
+body.addEventListener('mouseleave', windowUnHover);
 
 waitMsg.style.color = backgroundColor;
 waitMsg.style.display = "block";
@@ -175,14 +202,19 @@ gridBtnBox.style.borderColor = backgroundColor;
 gridBtnBox.addEventListener('mouseover', gridHover);
 gridBtnBox.addEventListener('mouseout', gridUnhover);
 
-let clickGridAtt = document.createAttribute("onclick");
-clickGridAtt.value = "clickGrid()";
-gridBtnBox.setAttributeNode(clickGridAtt);
+let clickGridBtnAtt = document.createAttribute("onclick");
+clickGridBtnAtt.value = "clickGridBtn()";
+gridBtnBox.setAttributeNode(clickGridBtnAtt);
 
 gridBtnText.style.textAlign = "center";
 gridBtnText.style.color = backgroundColor;
 
-body.addEventListener('mouseleave', windowUnHover);
+settingsBox.style.display = "none";
+settingsBox.style.position = "absolute";
+settingsBox.style.zIndex = "3";
+settingsBox.style.backgroundColor = backgroundColor;
 
-drawPage(); // Also called whenever window (body) is resized
-drawMenu();
+closeBtnText.style.color = backgroundColor;
+
+drawPage(); // Also called whenever window (body) is resized, via redrawPage()
+drawSidebar();
