@@ -90,23 +90,25 @@ function waitBeforeRedraw() {
 
 function drawSettings() {
   settingsOn = true;
-  let sideMargin = (window.innerWidth - (windowH / 2)) / 2;
-  let btnBorder = windowH / 200;
+  let f = 0.7; // size factor
+  let sideMargin = (window.innerWidth - (windowH * f / 2)) / 2;
+  let btnBorder = windowH * f / 200;
+
   settingsBox.style.display = "block";
-  settingsBox.style.width = `${windowH / 2}px`;
-  settingsBox.style.margin = `${windowH / 4}px ${sideMargin}px ${windowH / 4}px ${sideMargin}px`;
+  settingsBox.style.width = `${windowH * f / 2}px`;
+  settingsBox.style.margin = `${windowH * f / 4}px ${sideMargin}px ${windowH * f / 4}px ${sideMargin}px`;
   setRow8.style.width = "100%";
-  setRow8.style.height = `${windowH / 16}px`;
-  closeBtnBox.style.height = `${(windowH / 16) - (2 * btnBorder)}px`;
-  closeBtnBox.style.width = `${windowH / 6}px`;
+  setRow8.style.height = `${windowH * f / 16}px`;
+  closeBtnBox.style.height = `${(windowH * f / 16) - (2 * btnBorder)}px`;
+  closeBtnBox.style.width = `${windowH * f / 6}px`;
   closeBtnBox.style.display = "inline-block";
-  closeBtnBox.style.margin = `0 0 0 ${windowH / 6}px`;
+  closeBtnBox.style.margin = `0 0 0 ${windowH * f / 6}px`;
   closeBtnBox.style.backgroundColor = cellColor;
   closeBtnBox.style.borderStyle = "solid";
   closeBtnBox.style.borderColor = backgroundColor;
   closeBtnBox.style.borderWidth = `${btnBorder}px`;
-  closeBtnText.style.lineHeight = `${(windowH / 16) - (2 * btnBorder)}px`;
-  closeBtnText.style.fontSize = `${(windowH / 24) - (2 * btnBorder)}px`;
+  closeBtnText.style.lineHeight = `${(windowH * f / 16) - (2 * btnBorder)}px`;
+  closeBtnText.style.fontSize = `${(windowH * f / 24) - (2 * btnBorder)}px`;
   closeBtnText.style.textAlign = "center";
 }
 
