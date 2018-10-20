@@ -90,49 +90,82 @@ function waitBeforeRedraw() {
 
 function drawSettings() {
   settingsOn = true;
-  let f = 0.7; // size factor
-  let sideMargin = (window.innerWidth - (windowH * f / 2)) / 2;
-  let btnBorder = windowH * f / 200;
+  let dim = windowH * 0.7; // size factor
+  let sideMargin = (window.innerWidth - (dim / 2)) / 2;
+  let btnBorder = dim / 200;
 
+  // ......... for all settings menus ...............................
   settingsBox.style.display = "block";
-  settingsBox.style.width = `${windowH * f / 2}px`;
-  settingsBox.style.margin = `${windowH * f / 4}px ${sideMargin}px ${windowH * f / 4}px ${sideMargin}px`;
+  settingsBox.style.width = `${dim / 2}px`;
+  settingsBox.style.margin = `${dim / 4}px ${sideMargin}px ${dim / 4}px ${sideMargin}px`;
+
+  setRow1.style.width = "100%";
+  setRow1.style.height =
+
+  settingsTitle.innerHTML = "grid settings"
+  settingsTitle.style.textAlign = "center";
+  settingsTitle.style.lineHeight = `${dim / 16}px`;
+  settingsTitle.style.color = cellColor;
+  settingsTitle.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
+
+  setRow7.style.width = "100%";
+  setRow7.style.height = `${dim / 16}px`;
+
   setRow8.style.width = "100%";
-  setRow8.style.height = `${windowH * f / 16}px`;
-  closeBtnBox.style.height = `${(windowH * f / 16) - (2 * btnBorder)}px`;
-  closeBtnBox.style.width = `${windowH * f / 6}px`;
+  setRow8.style.height = `${dim / 16}px`;
+
+  closeBtnBox.style.height = `${(dim / 16) - (2 * btnBorder)}px`;
+  closeBtnBox.style.width = `${dim / 6}px`;
   closeBtnBox.style.display = "inline-block";
-  closeBtnBox.style.margin = `0 0 0 ${windowH * f / 6}px`;
+  closeBtnBox.style.margin = `0 0 0 ${dim / 6}px`;
   closeBtnBox.style.backgroundColor = cellColor;
   closeBtnBox.style.borderStyle = "solid";
   closeBtnBox.style.borderColor = backgroundColor;
   closeBtnBox.style.borderWidth = `${btnBorder}px`;
-  closeBtnText.style.lineHeight = `${(windowH * f / 16) - (2 * btnBorder)}px`;
-  closeBtnText.style.fontSize = `${(windowH * f / 24) - (2 * btnBorder)}px`;
+  closeBtnText.style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
+  closeBtnText.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
   closeBtnText.style.textAlign = "center";
-  setRow1.style.width = "100%";
-  setRow1.style.height = `${windowH * f / 24}px`;
-  document.getElementById('setRow1').appendChild(text1);
+
+  applyBtnBox.style.height = `${(dim / 16) - (2 * btnBorder)}px`;
+  applyBtnBox.style.width = `${dim / 6}px`;
+  applyBtnBox.style.display = "inline-block";
+  applyBtnBox.style.margin = `0 0 0 ${dim / 6}px`;
+  applyBtnBox.style.backgroundColor = cellColor;
+  applyBtnBox.style.borderStyle = "solid";
+  applyBtnBox.style.borderColor = backgroundColor;
+  applyBtnBox.style.borderWidth = `${btnBorder}px`;
+  applyBtnText.style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
+  applyBtnText.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
+  applyBtnText.style.textAlign = "center";
+
+  // .......... grid menu: row2 ...................................
+
+  setRow2.style.width = "100%";
+  setRow2.style.height = `${dim / 16}px`;
+
+  document.getElementById('setRow2').appendChild(text1);
   text1.style.display = "inline-block";
-  text1.style.lineHeight = `${(windowH * f / 24)}px`;
-  text1.style.fontSize = `${(windowH * f / 36)}px`;
+  text1.style.lineHeight = `${(dim / 24)}px`;
+  text1.style.fontSize = `${(dim / 36)}px`;
   text1.style.textAlign = "left";
   text1.style.color = cellColor;
-  text1.style.margin = `0 0 0 ${windowH * f / 64}px`;
+  text1.style.margin = `0 0 0 ${dim / 64}px`;
   text1.innerHTML = "number of rows (0 > n < 65):";
+
   form1.appendChild(input1);
   form1.style.display = "inline-block";
-  form1.style.height = `${(windowH * f / 36)}px`;
-  form1.style.margin = `0 0 0 ${windowH * f / 96}px`;
-  input1.style.width = `${windowH * f / 30}px`;
-  input1.style.lineHeight = `${(windowH * f / 36)}px`;
-  input1.style.fontSize = `${(windowH * f / 36)}px`;
+  form1.style.margin = `0 0 0 ${dim / 96}px`;
+
+  input1.style.width = `${dim / 30}px`;
+  input1.style.height = `${(dim / 36)}px`;
+  input1.style.lineHeight = `${(dim / 24)}px`;
+  input1.style.fontSize = `${(dim / 42)}px`;
   input1.style.backgroundColor = cellColor;
   input1.style.color = backgroundColor;
   input1.style.border = "none";
   input1.style.textAlign = "center";
   input1.value = `${gridN}`;
-  document.getElementById('setRow1').appendChild(form1);
+  document.getElementById('setRow2').appendChild(form1);
 }
 
 function cellClick(clickedID) {
@@ -176,9 +209,7 @@ function clickGridBtn() {
 
 function clickCloseBtn() {
   settingsBox.style.display = "none";
-  gridN = input1.value;
   settingsOn = false;
-  redrawPage();
 }
 
 function closeHover() {
@@ -189,6 +220,22 @@ function closeHover() {
 function closeUnhover() {
   closeBtnBox.style.backgroundColor = cellColor;
   closeBtnText.style.color = backgroundColor;
+}
+
+function clickApplyBtn() {
+  //settingsBox.style.display = "none";
+  gridN = input1.value;
+  redrawPage();
+}
+
+function applyHover() {
+  applyBtnBox.style.backgroundColor = menuHoverColor;
+  applyBtnText.style.color = cellColor;
+}
+
+function applyUnhover() {
+  applyBtnBox.style.backgroundColor = cellColor;
+  applyBtnText.style.color = backgroundColor;
 }
 
 let windowH = 0;
@@ -271,6 +318,13 @@ closeBtnBox.addEventListener('mouseout', closeUnhover);
 let clickCloseBtnAtt = document.createAttribute("onclick");
 clickCloseBtnAtt.value = "clickCloseBtn()";
 closeBtnBox.setAttributeNode(clickCloseBtnAtt);
+
+applyBtnText.style.color = backgroundColor;
+applyBtnBox.addEventListener('mouseover', applyHover);
+applyBtnBox.addEventListener('mouseout', applyUnhover);
+let clickApplyBtnAtt = document.createAttribute("onclick");
+clickApplyBtnAtt.value = "clickApplyBtn()";
+applyBtnBox.setAttributeNode(clickApplyBtnAtt);
 
 drawPage(); // Also called whenever window (body) is resized, via redrawPage()
 drawSidebar();
