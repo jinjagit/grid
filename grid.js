@@ -110,6 +110,29 @@ function drawSettings() {
   closeBtnText.style.lineHeight = `${(windowH * f / 16) - (2 * btnBorder)}px`;
   closeBtnText.style.fontSize = `${(windowH * f / 24) - (2 * btnBorder)}px`;
   closeBtnText.style.textAlign = "center";
+  setRow1.style.width = "100%";
+  setRow1.style.height = `${windowH * f / 24}px`;
+  document.getElementById('setRow1').appendChild(text1);
+  text1.style.display = "inline-block";
+  text1.style.lineHeight = `${(windowH * f / 24)}px`;
+  text1.style.fontSize = `${(windowH * f / 36)}px`;
+  text1.style.textAlign = "left";
+  text1.style.color = cellColor;
+  text1.style.margin = `0 0 0 ${windowH * f / 64}px`;
+  text1.innerHTML = "number of rows (0 > n < 65):";
+  form1.appendChild(input1);
+  form1.style.display = "inline-block";
+  form1.style.height = `${(windowH * f / 36)}px`;
+  form1.style.margin = `0 0 0 ${windowH * f / 96}px`;
+  input1.style.width = `${windowH * f / 30}px`;
+  input1.style.lineHeight = `${(windowH * f / 36)}px`;
+  input1.style.fontSize = `${(windowH * f / 36)}px`;
+  input1.style.backgroundColor = cellColor;
+  input1.style.color = backgroundColor;
+  input1.style.border = "none";
+  input1.style.textAlign = "center";
+  input1.value = `${gridN}`;
+  document.getElementById('setRow1').appendChild(form1);
 }
 
 function cellClick(clickedID) {
@@ -153,6 +176,9 @@ function clickGridBtn() {
 
 function clickCloseBtn() {
   settingsBox.style.display = "none";
+  gridN = input1.value;
+  settingsOn = false;
+  redrawPage();
 }
 
 function closeHover() {
@@ -181,6 +207,15 @@ let borderW = 0;
 let queueRedraw = false;
 let sidebarOn = false;
 let settingsOn = false;
+
+let text1 = document.createElement('p');
+let form1 = document.createElement('form');
+form1.setAttribute("method", "GET");
+form1.setAttribute("action", "#");
+form1.setAttribute("target", "_self");
+let input1 = document.createElement("input");
+input1.setAttribute("name", "");
+input1.setAttribute("value", "");
 
 let body = document.getElementsByTagName('body')[0];
 
