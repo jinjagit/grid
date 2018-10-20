@@ -150,7 +150,7 @@ function drawSettings() {
   text1.style.textAlign = "left";
   text1.style.color = cellColor;
   text1.style.margin = `0 0 0 ${dim / 64}px`;
-  text1.innerHTML = "number of rows (0 > n < 65):";
+  text1.innerHTML = "number of rows (0 < n < 65):";
 
   form1.appendChild(input1);
   form1.style.display = "inline-block";
