@@ -212,30 +212,19 @@ function clickCloseBtn() {
   settingsOn = false;
 }
 
-function closeHover() {
-  closeBtnBox.style.backgroundColor = menuHoverColor;
-  closeBtnText.style.color = cellColor;
+function menuBtnHover(i) {
+  menuBtnBoxes[i].style.backgroundColor = menuHoverColor;
+  menuBtnText[i].style.color = cellColor;
 }
 
-function closeUnhover() {
-  closeBtnBox.style.backgroundColor = cellColor;
-  closeBtnText.style.color = backgroundColor;
+function menuBtnUnhover(i) {
+  menuBtnBoxes[i].style.backgroundColor = cellColor;
+  menuBtnText[i].style.color = backgroundColor;
 }
 
 function clickApplyBtn() {
-  //settingsBox.style.display = "none";
   gridN = input1.value;
   redrawPage();
-}
-
-function applyHover() {
-  applyBtnBox.style.backgroundColor = menuHoverColor;
-  applyBtnText.style.color = cellColor;
-}
-
-function applyUnhover() {
-  applyBtnBox.style.backgroundColor = cellColor;
-  applyBtnText.style.color = backgroundColor;
 }
 
 let windowH = 0;
@@ -312,16 +301,19 @@ settingsBox.style.position = "absolute";
 settingsBox.style.zIndex = "3";
 settingsBox.style.backgroundColor = backgroundColor;
 
+let menuBtnBoxes = [closeBtnBox, applyBtnBox];
+let menuBtnText = [closeBtnText, applyBtnText];
+
 closeBtnText.style.color = backgroundColor;
-closeBtnBox.addEventListener('mouseover', closeHover);
-closeBtnBox.addEventListener('mouseout', closeUnhover);
+closeBtnBox.addEventListener('mouseover', function(){return menuBtnHover(0)});
+closeBtnBox.addEventListener('mouseout', function(){return menuBtnUnhover(0)});
 let clickCloseBtnAtt = document.createAttribute("onclick");
 clickCloseBtnAtt.value = "clickCloseBtn()";
 closeBtnBox.setAttributeNode(clickCloseBtnAtt);
 
 applyBtnText.style.color = backgroundColor;
-applyBtnBox.addEventListener('mouseover', applyHover);
-applyBtnBox.addEventListener('mouseout', applyUnhover);
+applyBtnBox.addEventListener('mouseover', function(){return menuBtnHover(1)});
+applyBtnBox.addEventListener('mouseout', function(){return menuBtnUnhover(1)});
 let clickApplyBtnAtt = document.createAttribute("onclick");
 clickApplyBtnAtt.value = "clickApplyBtn()";
 applyBtnBox.setAttributeNode(clickApplyBtnAtt);
