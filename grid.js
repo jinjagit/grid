@@ -38,12 +38,12 @@ function drawSidebar() {
 }
 
 function drawCells() {
-  for (let i = 0; i < (gridY * gridY); i++) {
+  for (let i = 0; i < (gridX * gridY); i++) {
     const cell = document.createElement('div');
     cell.classList.add('cell');
     cell.id = i.toString();
 
-    cell.style.gridColumn = `${(i % gridY) + 1} / span 1`;
+    cell.style.gridColumn = `${(i % gridX) + 1} / span 1`;
     cell.style.lineHeight = `${cellHeight}px`;
     cell.style.backgroundColor = cellColor;
 
@@ -91,12 +91,25 @@ function waitBeforeRedraw() {
 function drawSettings() {
   function drawSetBtnsDynamic() {
     for (let i = 1; i < btnBoxes.length; i++) { // update loop start as add more menu btns
-      btnBoxes[i].style.height = `${(dim / 16) - (2 * btnBorder)}px`;
-      btnBoxes[i].style.width = `${dim / 6}px`;
-      btnBoxes[i].style.margin = `0 0 0 ${dim / 6}px`;
-      btnBoxes[i].style.borderWidth = `${btnBorder}px`;
-      btnText[i].style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
-      btnText[i].style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
+
+      if (i > 2) {
+        btnBoxes[i].style.height = `${dim / 32}px`;
+        btnBoxes[i].style.lineHeight = `${dim / 24}px`;
+        btnBoxes[i].style.verticalAlign = "middle";
+        btnBoxes[i].style.width = `${dim / 24}px`;
+        btnBoxes[i].style.margin = `0 0 0 ${dim / 64}px`;
+        btnText[i].style.lineHeight = `${dim / 32}px`;
+        btnText[i].style.fontSize = `${dim / 36}px`;
+      } else {
+        btnBoxes[i].style.height = `${(dim / 16) - (2 * btnBorder)}px`;
+        btnBoxes[i].style.width = `${dim / 6}px`;
+        btnBoxes[i].style.margin = `0 0 0 ${dim / 6}px`;
+        btnBoxes[i].style.borderWidth = `${btnBorder}px`;
+        btnText[i].style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
+        btnText[i].style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
+      }
+
+
     }
   }
 
@@ -104,7 +117,7 @@ function drawSettings() {
     for (let i = 0; i < settingsText.length; i++) {
       settingsText[i].style.lineHeight = `${(dim / 24)}px`;
       settingsText[i].style.fontSize = `${(dim / 36)}px`;
-      settingsText[i].style.margin = `0 0 0 ${dim / 64}px`;
+      settingsText[i].style.margin = `0 0 0 ${dim / 40}px`;
     }
   }
 
@@ -160,10 +173,20 @@ function drawSettings() {
 
   setRow3.style.height = `${dim / 16}px`;
   document.getElementById('setRow3').appendChild(text2);
+  colBtnBox.appendChild(colBtnText);
+  document.getElementById('setRow3').appendChild(colBtnBox);
+  document.getElementById('setRow3').appendChild(text2a);
   text2.innerHTML = "number of columns:";
+  if (colDbl == true) {
+    colBtnText.innerHTML = "2n";
+  } else {
+    colBtnText.innerHTML = "n";
+  }
+  text2a.innerHTML = `= ${gridX}`;
 }
 
 function cellClick(clickedID) {
+  console.log(`cell ID: ${clickedID}`);
   // to develop: for use in editing module(s) placement(s) & settings
 }
 
@@ -196,7 +219,27 @@ function clickCloseBtn() {
 }
 
 function clickApplyBtn() {
-  gridY = input1.value;
+  if (input1.value > 0 && input1.value < 65) {
+    gridY = input1.value;
+    if (colDbl == true) {
+      gridX = gridY * 2;
+    } else {
+      gridX = gridY;
+    }
+  } else {
+    window.alert('ERROR! invalid input:\n\nnumber of rows must be integer, 0 < n < 65');
+  }
+  redrawPage();
+}
+
+function clickColBtn() {
+  if (colDbl == true) {
+    gridX = gridY;
+    colDbl = false;
+  } else {
+    gridX = gridY * 2;
+    colDbl = true;
+  }
   redrawPage();
 }
 
@@ -238,6 +281,7 @@ let menuHoverColor = "hsl(128, 30%, 65%)";
 let cellColor = "black";
 
 let gridY = 3;
+let gridX = 6;
 let cellHeight = 0;
 let gridGap = "1px";
 let borderW = 0;
@@ -245,6 +289,7 @@ let borderW = 0;
 let queueRedraw = false;
 let sidebarOn = false;
 let settingsOn = false;
+let colDbl = true;
 
 let body = document.getElementsByTagName('body')[0];
 
@@ -254,8 +299,9 @@ body.addEventListener('mouseleave', windowUnHover);
 
 let text1 = document.createElement('p');
 let text2 = document.createElement('p');
+let text2a = document.createElement('p');
 
-let settingsText = [text1, text2];
+let settingsText = [text1, text2, text2a];
 for (let i = 0; i < settingsText.length; i++) {
   settingsText[i].style.display = "inline-block";
   settingsText[i].style.textAlign = "left";
@@ -303,10 +349,12 @@ settingsBox.style.position = "absolute";
 settingsBox.style.zIndex = "3";
 settingsBox.style.backgroundColor = gridColor;
 
-let btnBoxes = [gridBtnBox, closeBtnBox, applyBtnBox]; // menu == [0], settings == [1]..[2]
-let btnText = [gridBtnText, closeBtnText, applyBtnText];
-let clickBtnAtt = [clickGridBtn, clickCloseBtn, clickApplyBtn];
-let clickBtnFuncs = ["clickGridBtn()", "clickCloseBtn()", "clickApplyBtn()"];
+let colBtnBox = document.createElement('div');
+let colBtnText = document.createElement('p');
+let btnBoxes = [gridBtnBox, closeBtnBox, applyBtnBox, colBtnBox]; // menu == [0], settings == [1]..[2]
+let btnText = [gridBtnText, closeBtnText, applyBtnText, colBtnText];
+let clickBtnAtt = [clickGridBtn, clickCloseBtn, clickApplyBtn, clickColBtn];
+let clickBtnFuncs = ["clickGridBtn()", "clickCloseBtn()", "clickApplyBtn()", "clickColBtn()"];
 
 drawBtnStatic();
 drawPage(); // Also called whenever window (body) is resized, via redrawPage()
