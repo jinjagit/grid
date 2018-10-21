@@ -96,10 +96,15 @@ function drawSettings() {
         btnBoxes[i].style.height = `${dim / 32}px`;
         btnBoxes[i].style.lineHeight = `${dim / 24}px`;
         btnBoxes[i].style.verticalAlign = "middle";
-        btnBoxes[i].style.width = `${dim / 24}px`;
         btnBoxes[i].style.margin = `0 0 0 ${dim / 64}px`;
         btnText[i].style.lineHeight = `${dim / 32}px`;
         btnText[i].style.fontSize = `${dim / 36}px`;
+        if (i < 4) {
+          btnBoxes[i].style.width = `${dim / 24}px`;
+        } else {
+          btnBoxes[i].style.width = `${dim / 18}px`;
+        }
+
       } else {
         btnBoxes[i].style.height = `${(dim / 16) - (2 * btnBorder)}px`;
         btnBoxes[i].style.width = `${dim / 6}px`;
@@ -183,6 +188,19 @@ function drawSettings() {
     colBtnText.innerHTML = "n";
   }
   text2a.innerHTML = `= ${gridX}`;
+
+  // .......... grid menu: row4 ...................................
+
+  setRow4.style.height = `${dim / 16}px`;
+  document.getElementById('setRow4').appendChild(text3);
+  text3.innerHTML = "grid lines:";
+  linesBtnBox.appendChild(linesBtnText);
+  document.getElementById('setRow4').appendChild(linesBtnBox);
+  if (gridLines == true) {
+    linesBtnText.innerHTML = "on";
+  } else {
+    linesBtnText.innerHTML = "off";
+  }
 }
 
 function cellClick(clickedID) {
@@ -243,6 +261,17 @@ function clickColBtn() {
   redrawPage();
 }
 
+function clickLinesBtn() {
+  if (gridLines == true) {
+    gridGap = "0";
+    gridLines = false;
+  } else {
+    gridGap = "1px";
+    gridLines = true;
+  }
+  redrawPage();
+}
+
 function menuBtnHover(i) {
   btnBoxes[i].style.backgroundColor = menuHoverColor;
   btnText[i].style.color = cellColor;
@@ -290,6 +319,7 @@ let queueRedraw = false;
 let sidebarOn = false;
 let settingsOn = false;
 let colDbl = true;
+let gridLines = true;
 
 let body = document.getElementsByTagName('body')[0];
 
@@ -300,8 +330,9 @@ body.addEventListener('mouseleave', windowUnHover);
 let text1 = document.createElement('p');
 let text2 = document.createElement('p');
 let text2a = document.createElement('p');
+let text3 = document.createElement('p');
 
-let settingsText = [text1, text2, text2a];
+let settingsText = [text1, text2, text2a, text3];
 for (let i = 0; i < settingsText.length; i++) {
   settingsText[i].style.display = "inline-block";
   settingsText[i].style.textAlign = "left";
@@ -351,10 +382,12 @@ settingsBox.style.backgroundColor = gridColor;
 
 let colBtnBox = document.createElement('div');
 let colBtnText = document.createElement('p');
-let btnBoxes = [gridBtnBox, closeBtnBox, applyBtnBox, colBtnBox]; // menu == [0], settings == [1]..[2]
-let btnText = [gridBtnText, closeBtnText, applyBtnText, colBtnText];
-let clickBtnAtt = [clickGridBtn, clickCloseBtn, clickApplyBtn, clickColBtn];
-let clickBtnFuncs = ["clickGridBtn()", "clickCloseBtn()", "clickApplyBtn()", "clickColBtn()"];
+let linesBtnBox = document.createElement('div');
+let linesBtnText = document.createElement('p');
+let btnBoxes = [gridBtnBox, closeBtnBox, applyBtnBox, colBtnBox, linesBtnBox]; // menu == [0], settings == [1]..[2]
+let btnText = [gridBtnText, closeBtnText, applyBtnText, colBtnText, linesBtnText];
+let clickBtnAtt = [clickGridBtn, clickCloseBtn, clickApplyBtn, clickColBtn, clickLinesBtn];
+let clickBtnFuncs = ["clickGridBtn()", "clickCloseBtn()", "clickApplyBtn()", "clickColBtn()", "clickLinesBtn()"];
 
 drawBtnStatic();
 drawPage(); // Also called whenever window (body) is resized, via redrawPage()
