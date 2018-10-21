@@ -309,8 +309,8 @@ let gridColor = "hsl(128, 30%, 40%)";
 let menuHoverColor = "hsl(128, 30%, 65%)";
 let cellColor = "black";
 
-let gridY = 3;
-let gridX = 6;
+let gridY = 7;
+let gridX = 14;
 let cellHeight = 0;
 let gridGap = "1px";
 let borderW = 0;
@@ -400,4 +400,3 @@ document.getElementById("test").onmousedown = function(event) {
     }
 }
 */
-// 328 lines (before btn refactor)
