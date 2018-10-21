@@ -3,16 +3,16 @@
 function drawPage() {
   windowH = window.innerHeight;
   lastWindowH = windowH;
-  cellHeight = windowH / gridN;
+  cellHeight = windowH / gridY;
   borderW = windowH / 400;
   menuBoxH = windowH / 20;
 
   sidebarDiv.style.display = "none";
   waitMsg.style.display = "none";
-  body.style.backgroundColor = backgroundColor;
+  body.style.backgroundColor = gridColor;
   grid.style.display = "grid";
   grid.style.height = `${windowH}px`;
-  grid.style.backgroundColor = backgroundColor;
+  grid.style.backgroundColor = gridColor;
   grid.style.gridGap = gridGap;
 
   destroyCells();
@@ -38,12 +38,12 @@ function drawSidebar() {
 }
 
 function drawCells() {
-  for (let i = 0; i < (gridN * gridN); i++) {
+  for (let i = 0; i < (gridY * gridY); i++) {
     const cell = document.createElement('div');
     cell.classList.add('cell');
     cell.id = i.toString();
 
-    cell.style.gridColumn = `${(i % gridN) + 1} / span 1`;
+    cell.style.gridColumn = `${(i % gridY) + 1} / span 1`;
     cell.style.lineHeight = `${cellHeight}px`;
     cell.style.backgroundColor = cellColor;
 
@@ -89,67 +89,56 @@ function waitBeforeRedraw() {
 }
 
 function drawSettings() {
+  function drawSetBtnsDynamic() {
+    for (let i = 1; i < btnBoxes.length; i++) { // update loop start as add more menu btns
+      btnBoxes[i].style.height = `${(dim / 16) - (2 * btnBorder)}px`;
+      btnBoxes[i].style.width = `${dim / 6}px`;
+      btnBoxes[i].style.margin = `0 0 0 ${dim / 6}px`;
+      btnBoxes[i].style.borderWidth = `${btnBorder}px`;
+      btnText[i].style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
+      btnText[i].style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
+    }
+  }
+
+  function drawSetTextDynamic() {
+    for (let i = 0; i < settingsText.length; i++) {
+      settingsText[i].style.lineHeight = `${(dim / 24)}px`;
+      settingsText[i].style.fontSize = `${(dim / 36)}px`;
+      settingsText[i].style.margin = `0 0 0 ${dim / 64}px`;
+    }
+  }
+
   settingsOn = true;
   let dim = windowH * 0.7; // size factor
   let sideMargin = (window.innerWidth - (dim / 2)) / 2;
   let btnBorder = dim / 200;
 
   // ......... for all settings menus ...............................
+
+  for (let i = 1; i < 9; i++) {
+    menuRows[i].style.width = "100%";
+  }
+
   settingsBox.style.display = "block";
   settingsBox.style.width = `${dim / 2}px`;
   settingsBox.style.margin = `${dim / 4}px ${sideMargin}px ${dim / 4}px ${sideMargin}px`;
 
-  setRow1.style.width = "100%";
-  setRow1.style.height =
-
-  settingsTitle.innerHTML = "grid settings"
   settingsTitle.style.textAlign = "center";
   settingsTitle.style.lineHeight = `${dim / 16}px`;
   settingsTitle.style.color = cellColor;
   settingsTitle.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
 
-  setRow7.style.width = "100%";
-  setRow7.style.height = `${dim / 16}px`;
+  drawSetBtnsDynamic();
+  drawSetTextDynamic();
 
-  setRow8.style.width = "100%";
-  setRow8.style.height = `${dim / 16}px`;
+  // .......... grid menu: row1 ...................................
 
-  closeBtnBox.style.height = `${(dim / 16) - (2 * btnBorder)}px`;
-  closeBtnBox.style.width = `${dim / 6}px`;
-  closeBtnBox.style.display = "inline-block";
-  closeBtnBox.style.margin = `0 0 0 ${dim / 6}px`;
-  closeBtnBox.style.backgroundColor = cellColor;
-  closeBtnBox.style.borderStyle = "solid";
-  closeBtnBox.style.borderColor = backgroundColor;
-  closeBtnBox.style.borderWidth = `${btnBorder}px`;
-  closeBtnText.style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
-  closeBtnText.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
-  closeBtnText.style.textAlign = "center";
-
-  applyBtnBox.style.height = `${(dim / 16) - (2 * btnBorder)}px`;
-  applyBtnBox.style.width = `${dim / 6}px`;
-  applyBtnBox.style.display = "inline-block";
-  applyBtnBox.style.margin = `0 0 0 ${dim / 6}px`;
-  applyBtnBox.style.backgroundColor = cellColor;
-  applyBtnBox.style.borderStyle = "solid";
-  applyBtnBox.style.borderColor = backgroundColor;
-  applyBtnBox.style.borderWidth = `${btnBorder}px`;
-  applyBtnText.style.lineHeight = `${(dim / 16) - (2 * btnBorder)}px`;
-  applyBtnText.style.fontSize = `${(dim / 24) - (2 * btnBorder)}px`;
-  applyBtnText.style.textAlign = "center";
+  settingsTitle.innerHTML = "grid settings"
 
   // .......... grid menu: row2 ...................................
 
-  setRow2.style.width = "100%";
   setRow2.style.height = `${dim / 16}px`;
-
   document.getElementById('setRow2').appendChild(text1);
-  text1.style.display = "inline-block";
-  text1.style.lineHeight = `${(dim / 24)}px`;
-  text1.style.fontSize = `${(dim / 36)}px`;
-  text1.style.textAlign = "left";
-  text1.style.color = cellColor;
-  text1.style.margin = `0 0 0 ${dim / 64}px`;
   text1.innerHTML = "number of rows (0 < n < 65):";
 
   form1.appendChild(input1);
@@ -161,18 +150,24 @@ function drawSettings() {
   input1.style.lineHeight = `${(dim / 24)}px`;
   input1.style.fontSize = `${(dim / 42)}px`;
   input1.style.backgroundColor = cellColor;
-  input1.style.color = backgroundColor;
+  input1.style.color = gridColor;
   input1.style.border = "none";
   input1.style.textAlign = "center";
-  input1.value = `${gridN}`;
+  input1.value = `${gridY}`;
   document.getElementById('setRow2').appendChild(form1);
+
+  // .......... grid menu: row3 ...................................
+
+  setRow3.style.height = `${dim / 16}px`;
+  document.getElementById('setRow3').appendChild(text2);
+  text2.innerHTML = "number of columns:";
 }
 
 function cellClick(clickedID) {
   // to develop: for use in editing module(s) placement(s) & settings
 }
 
-function triggerHover() {
+function sidebarHover() {
   sidebarOn = true;
   if (windowH != lastSidebarH) {
     drawSidebar();
@@ -180,26 +175,14 @@ function triggerHover() {
   sidebarDiv.style.display = "inline-block";
 }
 
-function triggerUnhover() {
+function sidebarUnhover() {
   sidebarDiv.style.display = "none";
   sidebarOn = false;
-
-}
-
-function gridHover() {
-  triggerHover();
-  gridBtnBox.style.backgroundColor = menuHoverColor;
-  gridBtnText.style.color = cellColor;
-}
-
-function gridUnhover() {
-  gridBtnBox.style.backgroundColor = cellColor;
-  gridBtnText.style.color = backgroundColor;
 }
 
 function windowUnHover() {
   if (sidebarOn == true) {
-    triggerUnhover();
+    sidebarUnhover();
   }
 }
 
@@ -212,30 +195,49 @@ function clickCloseBtn() {
   settingsOn = false;
 }
 
+function clickApplyBtn() {
+  gridY = input1.value;
+  redrawPage();
+}
+
 function menuBtnHover(i) {
-  menuBtnBoxes[i].style.backgroundColor = menuHoverColor;
-  menuBtnText[i].style.color = cellColor;
+  btnBoxes[i].style.backgroundColor = menuHoverColor;
+  btnText[i].style.color = cellColor;
 }
 
 function menuBtnUnhover(i) {
-  menuBtnBoxes[i].style.backgroundColor = cellColor;
-  menuBtnText[i].style.color = backgroundColor;
+  btnBoxes[i].style.backgroundColor = cellColor;
+  btnText[i].style.color = gridColor;
 }
 
-function clickApplyBtn() {
-  gridN = input1.value;
-  redrawPage();
+function drawBtnStatic() {
+  for (let i = 0; i < btnBoxes.length; i++) {
+    if (i != 0) {
+      btnBoxes[i].style.display = "inline-block";
+    }
+    btnBoxes[i].style.backgroundColor = cellColor;
+    btnBoxes[i].style.borderColor = gridColor;
+    btnBoxes[i].style.borderStyle = "solid";
+    btnBoxes[i].addEventListener('mouseover', function(){return menuBtnHover(i)});
+    btnBoxes[i].addEventListener('mouseout', function(){return menuBtnUnhover(i)});
+    clickBtnAtt[i] = document.createAttribute("onclick");
+    clickBtnAtt[i].value = clickBtnFuncs[i];
+    btnBoxes[i].setAttributeNode(clickBtnAtt[i]);
+    btnText[i].style.textAlign = "center";
+    btnText[i].style.color = gridColor;
+    btnText[i].style.textAlign = "center";
+  }
 }
 
 let windowH = 0;
 let lastWindowH = 0;
 let lastSidebarH = 0;
 
-let backgroundColor = "hsl(128, 30%, 40%)";
+let gridColor = "hsl(128, 30%, 40%)";
 let menuHoverColor = "hsl(128, 30%, 65%)";
 let cellColor = "black";
 
-let gridN = 3;
+let gridY = 3;
 let cellHeight = 0;
 let gridGap = "1px";
 let borderW = 0;
@@ -244,22 +246,30 @@ let queueRedraw = false;
 let sidebarOn = false;
 let settingsOn = false;
 
-let text1 = document.createElement('p');
-let form1 = document.createElement('form');
-form1.setAttribute("method", "GET");
-form1.setAttribute("action", "#");
-form1.setAttribute("target", "_self");
-let input1 = document.createElement("input");
-input1.setAttribute("name", "");
-input1.setAttribute("value", "");
-
 let body = document.getElementsByTagName('body')[0];
 
 body.style.fontFamily = "'Ubuntu Mono', monospace";
 body.style.fontWeight = "normal";
 body.addEventListener('mouseleave', windowUnHover);
 
-waitMsg.style.color = backgroundColor;
+let text1 = document.createElement('p');
+let text2 = document.createElement('p');
+
+let settingsText = [text1, text2];
+for (let i = 0; i < settingsText.length; i++) {
+  settingsText[i].style.display = "inline-block";
+  settingsText[i].style.textAlign = "left";
+  settingsText[i].style.color = cellColor;
+}
+
+let form1 = document.createElement('form');
+form1.setAttribute("method", "GET");
+form1.setAttribute("action", "#");
+form1.setAttribute("target", "_self");
+let input1 = document.createElement("input");
+input1.setAttribute("value", "");
+
+waitMsg.style.color = gridColor;
 waitMsg.style.display = "block";
 waitMsg.style.textAlign = "center";
 
@@ -268,55 +278,45 @@ sidebarTrigger.style.position = "absolute";
 sidebarTrigger.style.zIndex = "2";
 sidebarTrigger.style.height = "100%";
 sidebarTrigger.style.backgroundColor = "transparent";
-sidebarTrigger.addEventListener('mouseover', triggerHover);
+sidebarTrigger.addEventListener('mouseover', sidebarHover);
 
 sidebarDiv.style.position = "absolute";
 sidebarDiv.style.zIndex = "1";
 sidebarDiv.style.height = "100%";
 sidebarDiv.style.display = "none";
-sidebarDiv.style.backgroundColor = backgroundColor;
-sidebarDiv.addEventListener('mouseout', triggerUnhover);
-sidebarDiv.addEventListener('mouseover', triggerHover);
+sidebarDiv.style.backgroundColor = gridColor;
+sidebarDiv.addEventListener('mouseout', sidebarUnhover);
+sidebarDiv.addEventListener('mouseover', sidebarHover);
+
+let menuRows = [];
+for (let i = 1; i < 9; i++) {
+  menuRows[i] = document.getElementById(`setRow${i}`);
+}
 
 titleBox.style.backgroundColor = cellColor;
 titleBox.style.borderStyle = "solid";
-titleBox.style.borderColor = backgroundColor;
-titleBox.addEventListener('mouseover', triggerHover);
-
-gridBtnBox.style.backgroundColor = cellColor;
-gridBtnBox.style.borderStyle = "solid";
-gridBtnBox.style.borderColor = backgroundColor;
-gridBtnBox.addEventListener('mouseover', gridHover);
-gridBtnBox.addEventListener('mouseout', gridUnhover);
-
-let clickGridBtnAtt = document.createAttribute("onclick");
-clickGridBtnAtt.value = "clickGridBtn()";
-gridBtnBox.setAttributeNode(clickGridBtnAtt);
-
-gridBtnText.style.textAlign = "center";
-gridBtnText.style.color = backgroundColor;
+titleBox.style.borderColor = gridColor;
+titleBox.addEventListener('mouseover', sidebarHover);
 
 settingsBox.style.display = "none";
 settingsBox.style.position = "absolute";
 settingsBox.style.zIndex = "3";
-settingsBox.style.backgroundColor = backgroundColor;
+settingsBox.style.backgroundColor = gridColor;
 
-let menuBtnBoxes = [closeBtnBox, applyBtnBox];
-let menuBtnText = [closeBtnText, applyBtnText];
+let btnBoxes = [gridBtnBox, closeBtnBox, applyBtnBox]; // menu == [0], settings == [1]..[2]
+let btnText = [gridBtnText, closeBtnText, applyBtnText];
+let clickBtnAtt = [clickGridBtn, clickCloseBtn, clickApplyBtn];
+let clickBtnFuncs = ["clickGridBtn()", "clickCloseBtn()", "clickApplyBtn()"];
 
-closeBtnText.style.color = backgroundColor;
-closeBtnBox.addEventListener('mouseover', function(){return menuBtnHover(0)});
-closeBtnBox.addEventListener('mouseout', function(){return menuBtnUnhover(0)});
-let clickCloseBtnAtt = document.createAttribute("onclick");
-clickCloseBtnAtt.value = "clickCloseBtn()";
-closeBtnBox.setAttributeNode(clickCloseBtnAtt);
-
-applyBtnText.style.color = backgroundColor;
-applyBtnBox.addEventListener('mouseover', function(){return menuBtnHover(1)});
-applyBtnBox.addEventListener('mouseout', function(){return menuBtnUnhover(1)});
-let clickApplyBtnAtt = document.createAttribute("onclick");
-clickApplyBtnAtt.value = "clickApplyBtn()";
-applyBtnBox.setAttributeNode(clickApplyBtnAtt);
-
+drawBtnStatic();
 drawPage(); // Also called whenever window (body) is resized, via redrawPage()
 drawSidebar();
+
+/* how to get right-click... (but not with id passed!)
+document.getElementById("test").onmousedown = function(event) {
+    if (event.which == 3) {
+        alert("right clicked!");
+    }
+}
+*/
+// 328 lines (before btn refactor)
